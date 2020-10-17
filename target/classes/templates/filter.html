@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Main</title>
+    <style>
+        body {
+            background: #c7b39b url(https://i.redd.it/i9iqra3s5y111.jpg); /* Цвет фона и путь к файлу */
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+
+        }
+    </style>
+</head>
+
+
+
+
+
+
+<body>
+
+<!-- блок навигации -->
+<nav class="navbar navbar-dark bg-dark p-3">
+    <a class="navbar-brand" href="/">FirsWeb</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <div>
+                    <form th:action="@{/logout}" method="post">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                        <button class="btn btn-primary" type="submit">Выйти</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+</nav>
+
+<div class="container">
+
+
+    <a th:href="@{/main}" class="mt-4">К списку всех сообщений</a>
+
+
+    <!-- messages pagination
+    <nav aria-label="Pagination" th:if="${messages.totalPages gt 0}">
+        <ul class="pagination justify-content font-weight-medium">
+            <li class="page-item" th:classappend="${messages.number eq 0} ? 'disabled'">
+                <a class="page-link svg-icon"
+                   th:href="@{/main/filter?page={id}(id=${messages.number lt 2 ? 1 : messages.number})}"
+                   aria-label="Previous"
+                   title="Previous Page" rel="tooltip">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${i eq messages.number + 1} ? 'active'"
+                th:each="i : ${#numbers.sequence( messages.number + 1, messages.totalPages > 10 + messages.number ? messages.number + 10 : messages.totalPages, 1)}">
+                <a class="page-link" th:href="@{/main/filter?page={id}(id=${i})}" th:text="${i}"
+                   th:title="${'Page '+ i}"
+                   rel="tooltip"></a>
+            </li>
+            <li class="page-item disabled" th:if="${messages.number + 10 < messages.totalPages}">
+                <a class="page-link svg-icon" href="#">
+                    <span data-feather="more-horizontal" width="20" height="20"></span>
+                </a>
+            </li>
+            <li class="page-item" th:classappend="${messages.number + 1 eq messages.totalPages} ? 'disabled'">
+                <a class="page-link svg-icon" th:href="@{/main/filter?page={id}(id=${messages.number + 2})}"
+                   aria-label="Next"
+                   title="Next Page" rel="tooltip">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+-->
+
+
+    <!-- блок сообщений -->
+
+    <div class="card-columns">
+        <div th:each="message : ${messages}">
+            <div class="card  my-3" style="width: 18rem;">
+
+                <abbr title="Это порядковый номер сообщения">
+                    <span class="badge badge-info ml-1" th:text="${message.id}"></span><br/>
+                </abbr>
+                <div class="text-center ">
+                    <span th:text="${message.text}"></span><br/>
+                    #<a th:href="@{/main/filterByTag/{tag}(tag=${message.tag})}"><ins th:text="${message.tag}"></ins></a>
+                </div>
+                <div class="card-footer text-muted ">
+                    От пользователя: <a th:href="@{/main/filter/{name}(name=${message.name})}" th:text="${message.name}"></a>
+                </div>
+                <div th:if="${getAuthentication == 'KostyaPasya'}">
+                    <a th:href="@{/main/delete/{id}(id=${message.id})}">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!--
+
+        <div>Список отфильтрованных сообщений:</div>
+        <div class="card-columns">
+            {{#messages}}
+                <div class="card my-3" style="width: 18rem;">
+                    <div class="m-2">
+                        <span class="badge badge-info">{{id}}</span><br/>
+                        <span>{{text}}</span><br/>
+                        <i><ins>#{{tag}}</ins></i>
+                    </div>
+                    <div class="card-footer text-muted">
+                        От пользователя: <strong>{{name}}</strong>
+                    </div>
+                </div>
+            {{/messages}}
+    -->
+</div>
+</div>
+</body>
+</html>
